@@ -35,20 +35,20 @@ async function processLineByLine() {
 await processLineByLine();
 
 function isInValid(num) {
-  //   console.log(num);
   let numarray = Array.from(String(num));
-  //   console.log(numarray);
-  if (numarray.length % 2 !== 0) {
-    return false;
-  }
-  for (let i = 0; i < numarray.length / 2; i++) {
-    const a = numarray[0 + i];
-    const b = numarray[numarray.length / 2 + i];
-    if (a !== b) {
-      return false;
+  for (let i = 1; i <= numarray.length / 2; i++) {
+    const toMatch = numarray.slice(0, i);
+    let invalid = true;
+    if (numarray.length % i !== 0) continue;
+    for (let j = i; j <= numarray.length - i; j += i) {
+      const remainder = numarray.slice(j, j + i);
+      if (remainder.toString() !== toMatch.toString()) {
+        invalid = false;
+        continue;
+      }
     }
+    if (invalid) return true;
   }
-  console.log("invalid\n");
 
-  return true;
+  return false;
 }
