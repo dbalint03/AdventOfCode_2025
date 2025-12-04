@@ -1,5 +1,6 @@
 import { log } from "console";
 import fs from "fs";
+import { get } from "http";
 import readline from "readline";
 
 async function processLineByLine() {
@@ -11,32 +12,45 @@ async function processLineByLine() {
   });
   let sum = 0;
   for await (const line of rl) {
-    console.log(line);
+    // console.log(line);
 
-    let maxIndex = 0;
+    let indexes = [];
+    indexes[0] = 0;
     let result = "";
-    for (let i = 0; i < line.length - 1; i++) {
-      const element = line[i];
-      // console.log(element);
-      if (Number.parseInt(element) > Number.parseInt(line[maxIndex])) {
-        maxIndex = i;
+    for (let j = 0; j < 2; j++) {
+      for (let i = indexes[j]; i < line.length - (2 - j - 1); i++) {
+        if (Number.parseInt(line[i]) > Number.parseInt(line[indexes[j]])) {
+          indexes[j] = i;
+        }
       }
+      indexes[j + 1] = indexes[j] + 1;
     }
-    log(`max index: ${maxIndex}`);
-    let secondIndex = maxIndex + 1;
-    for (let j = maxIndex + 1; j < line.length; j++) {
-      const element = line[j];
-      if (Number.parseInt(element) > Number.parseInt(line[secondIndex])) {
-        secondIndex = j;
-      }
-    }
-    // console.log(maxIndex);
-    // console.log(secondIndex);
-    result += line[maxIndex] + line[secondIndex];
-    log(result);
+    // console.log(
+    //   getNMaxNumbers(line, 12)
+    //     .map((i) => line[i])
+    //     .join("")
+    // );
+    result += getNMaxNumbers(line, 12)
+      .map((i) => line[i])
+      .join("");
     sum += Number.parseInt(result);
-    log(`Current sum: ${sum}`);
+    // log(`Current sum: ${sum}`);
   }
   console.log(`Sum of results is: ${sum}`);
 }
 await processLineByLine();
+
+function getNMaxNumbers(arr, n) {
+  let indexes = [];
+  indexes[0] = 0;
+  let result = "";
+  for (let j = 0; j < n; j++) {
+    for (let i = indexes[j]; i < arr.length - (n - j - 1); i++) {
+      if (Number.parseInt(arr[i]) > Number.parseInt(arr[indexes[j]])) {
+        indexes[j] = i;
+      }
+    }
+    indexes[j + 1] = indexes[j] + 1;
+  }
+  return indexes.slice(0, n);
+}
