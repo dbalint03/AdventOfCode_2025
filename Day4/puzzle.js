@@ -1,6 +1,4 @@
-import { log } from "console";
 import fs from "fs";
-import { get } from "http";
 import readline from "readline";
 
 let matrix = [];
