@@ -24,25 +24,26 @@ async function processLineByLine() {
 }
 await processLineByLine();
 
-// for (const key in graph.list) {
-//   console.log(key);
-// }
 console.log(coords);
 getPaths(coords);
 
-// console.log(distance(coords[0], coords[1]));
 
 // for (let i = 0; i < distances.length; i++) {
 //   console.log(distances[i].join("\t"));
 // }
 shortestPaths(distances, 10);
 
-console.log(graph.list);
+// console.log(graph.list);
 // console.log(graph.countEdges());
 let circuits = graph.lengthOfConnectedParts();
-console.log(circuits);
-console.log(circuits.sort((a, b) => b - a).slice(0,3).reduce((a,b) => a*b));
 // console.log(circuits);
+console.log(
+  circuits
+    .sort((a, b) => b - a)
+    .slice(0, 3)
+    .reduce((a, b) => a * b)
+);
+console.log(circuits);
 
 // console.log(graph.isConnected(1, 6));
 function distance(a, b) {
@@ -75,32 +76,16 @@ function shortestPaths(matrix, n) {
       sorted.push([i, j]);
     }
   }
-//   console.log(sorted);
   sorted.sort((a, b) => matrix[a[0]][a[1]] - matrix[b[0]][b[1]]);
-//   console.log(sorted);
-//   console.log(sorted.slice(0, n).map((e) => matrix[e[0]][e[1]]));
+  //   console.log(sorted.slice(0, n).map((e) => matrix[e[0]][e[1]]));
 
-  //   let shortest = [0, 1];
-  //   for (let i = 0; i < matrix.length; i++) {
-  //     for (let j = i + 1; j < matrix[0].length; j++) {
-  //       if (matrix[i][j] < matrix[shortest[0]][shortest[1]]) {
-  //         shortest[0] = i;
-  //         shortest[1] = j;
-  //       }
-  //     }
-  //   }
-  //   console.log(shortest);
-  //   graph.addEdge(shortest[0], shortest[1]);
-  //   sorted.slice(0, n).map(e=> graph.addEdge(e[0], e[1]));
-
-  let total = 0;
+  let last;
   for (let i = 0; i < sorted.length; i++) {
     if (!graph.isConnected(sorted[i][0], sorted[i][1])) {
       graph.addEdge(sorted[i][0], sorted[i][1]);
-    }
-    total++;
-    if (total == n) {
-      break;
+      // console.log(`conected ${coords[sorted[i][0]].x}, and ${coords[sorted[i][1]].x}`);
+      last = coords[sorted[i][0]].x * coords[sorted[i][1]].x;
     }
   }
+  console.log(last);
 }

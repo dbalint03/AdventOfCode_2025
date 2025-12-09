@@ -42,40 +42,27 @@ class Graph {
     const visited = new Set();
     const paths = [];
     for (const key in this.list) {
-      // console.log("main loop visited");
-
-      // console.log(visited);
-
-      // console.log("\nmain loop key " + key);
 
       if (visited.has(Number(key))) {
-        // console.log("already has visited " +key);
         continue;
       }
-      //   console.log(this.dfs(key, visited));
-      //   console.log(visited);
 
-      paths.push(this.dfs(key, visited));
-      //   console.log(paths);
+      paths.push(this.lengthOfConncectedDFS(key, visited));
     }
     return paths;
   }
-  dfs(node, visited) {
-    // console.log("visisiting " + node);
+  lengthOfConncectedDFS(node, visited) {
 
     if (this.list[node].length === 0) {
       visited.add(Number(node));
-      // console.log(visited);
       return 1;
     }
     let sum = 0;
     visited.add(Number(node));
-    // console.log(visited);
     for (const neighbor of this.list[node]) {
       if (!visited.has(neighbor)) {
-        // console.log("neighbor " + neighbor);
 
-        sum += this.dfs(neighbor, visited);
+        sum += this.lengthOfConncectedDFS(neighbor, visited);
       }
     }
     return 1 + sum;
